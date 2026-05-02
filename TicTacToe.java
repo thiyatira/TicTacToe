@@ -21,7 +21,11 @@ public class TicTacToe {
         int row = getRowFromSlot(slot);
         int col = getColFromSlot(slot);
 
-        System.out.println("You selected -> Row: " + row + ", Column: " + col);
+        if (isValidMove(row, col)) {
+            System.out.println("Valid move at Row: " + row + ", Column: " + col);
+        } else {
+            System.out.println("Invalid move! Cell is either out of bounds or already occupied.");
+        }
     }
 
     static void initializeBoard() {
@@ -91,5 +95,15 @@ public class TicTacToe {
 
     static int getColFromSlot(int slot) {
         return (slot - 1) % 3;
+    }
+
+    static boolean isValidMove(int row, int col) {
+        // Check bounds
+        if (row < 0 || row >= 3 || col < 0 || col >= 3) {
+            return false;
+        }
+
+        // Check if cell is empty
+        return board[row][col] == '-';
     }
 }
