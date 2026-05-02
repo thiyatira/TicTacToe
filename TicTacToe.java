@@ -35,6 +35,7 @@ public class TicTacToe {
                     isHumanTurn = false;
                 } else {
                     System.out.println("Invalid move! Try again.");
+                    continue;
                 }
 
             } else {
@@ -43,7 +44,7 @@ public class TicTacToe {
                 isHumanTurn = true;
             }
 
-            // ✅ UC9: Win Check
+            // Win check
             if (hasWon(humanSymbol)) {
                 printBoard();
                 System.out.println("🎉 You win!");
@@ -52,7 +53,9 @@ public class TicTacToe {
                 printBoard();
                 System.out.println("💻 Computer wins!");
                 gameOver = true;
-            } else if (isBoardFull()) {
+            }
+            // Draw Check
+            else if (isDraw()) {
                 printBoard();
                 System.out.println("🤝 It's a draw!");
                 gameOver = true;
@@ -61,9 +64,9 @@ public class TicTacToe {
     }
 
     static void initializeBoard() {
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                board[row][col] = '-';
+        for (int r = 0; r < 3; r++) {
+            for (int c = 0; c < 3; c++) {
+                board[r][c] = '-';
             }
         }
     }
@@ -97,10 +100,10 @@ public class TicTacToe {
     static void printBoard() {
         System.out.println("-------------");
 
-        for (int row = 0; row < 3; row++) {
+        for (int r = 0; r < 3; r++) {
             System.out.print("| ");
-            for (int col = 0; col < 3; col++) {
-                System.out.print(board[row][col] + " | ");
+            for (int c = 0; c < 3; c++) {
+                System.out.print(board[r][c] + " | ");
             }
             System.out.println();
             System.out.println("-------------");
@@ -143,44 +146,34 @@ public class TicTacToe {
         System.out.println("Computer played at position: " + (row * 3 + col + 1));
     }
 
-    // 🔥 UC9 Core Logic
     static boolean hasWon(char symbol) {
 
-        // Rows & Columns
         for (int i = 0; i < 3; i++) {
             if (board[i][0] == symbol &&
                 board[i][1] == symbol &&
-                board[i][2] == symbol) {
-                return true;
-            }
+                board[i][2] == symbol) return true;
 
             if (board[0][i] == symbol &&
                 board[1][i] == symbol &&
-                board[2][i] == symbol) {
-                return true;
-            }
+                board[2][i] == symbol) return true;
         }
 
-        // Diagonals
         if (board[0][0] == symbol &&
             board[1][1] == symbol &&
-            board[2][2] == symbol) {
-            return true;
-        }
+            board[2][2] == symbol) return true;
 
         if (board[0][2] == symbol &&
             board[1][1] == symbol &&
-            board[2][0] == symbol) {
-            return true;
-        }
+            board[2][0] == symbol) return true;
 
         return false;
     }
 
-    static boolean isBoardFull() {
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                if (board[row][col] == '-') {
+    // Draw Logic
+    static boolean isDraw() {
+        for (int r = 0; r < 3; r++) {
+            for (int c = 0; c < 3; c++) {
+                if (board[r][c] == '-') {
                     return false;
                 }
             }
