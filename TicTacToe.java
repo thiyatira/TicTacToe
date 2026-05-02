@@ -9,25 +9,29 @@ public class TicTacToe {
     static char humanSymbol;
     static char computerSymbol;
 
-    public static void main(String[] args) {
+    static final Scanner scanner = new Scanner(System.in);
+    static final Random random = new Random();
 
+    public static void main(String[] args) {
         initializeBoard();
         tossAndAssignSymbols();
         displayTossResult();
         printBoard();
 
-        int slot = getUserSlot();
+        if (isHumanTurn) {
+            int slot = getUserSlot();
+            int row = getRowFromSlot(slot);
+            int col = getColFromSlot(slot);
 
-        int row = getRowFromSlot(slot);
-        int col = getColFromSlot(slot);
-
-        if (isValidMove(row, col)) {
-            placeMove(row, col, humanSymbol);
-            System.out.println("\nMove placed successfully!\n");
-        } else {
-            System.out.println("\nInvalid move! Try again.\n");
+            if (isValidMove(row, col)) {
+                placeMove(row, col, humanSymbol);
+                printBoard();
+            } else {
+                System.out.println("Invalid move!");
+            }
         }
 
+        computerMove();
         printBoard();
     }
 
@@ -40,7 +44,6 @@ public class TicTacToe {
     }
 
     static void tossAndAssignSymbols() {
-        Random random = new Random();
         int toss = random.nextInt(2);
 
         if (toss == 0) {
@@ -84,12 +87,8 @@ public class TicTacToe {
     }
 
     static int getUserSlot() {
-        Scanner scanner = new Scanner(System.in);
-
         System.out.print("Enter a slot number (1-9): ");
-        int slot = scanner.nextInt();
-
-        return slot;
+        return scanner.nextInt();
     }
 
     static int getRowFromSlot(int slot) {
@@ -109,5 +108,20 @@ public class TicTacToe {
 
     static void placeMove(int row, int col, char symbol) {
         board[row][col] = symbol;
+    }
+
+    static void computerMove() {
+        int row;
+        int col;
+
+        do {
+            int slot = random.nextInt(9) + 1;
+            row = getRowFromSlot(slot);
+            col = getColFromSlot(slot);
+        } while (!isValidMove(row, col));
+
+        placeMove(row, col, computerSymbol);
+
+        System.out.println("Computer played at Row: " + row + ", Column: " + col);
     }
 }
